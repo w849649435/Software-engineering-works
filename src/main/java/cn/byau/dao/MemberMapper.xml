@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.byau.dao.MemberMapper" >
+  <resultMap id="BaseResultMap" type="cn.byau.pojo.Member" >
+    <constructor >
+      <idArg column="memberid" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="context" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="magdate" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="contactsNo" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    memberid, username, title, email, context, magdate, contactsNo
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.byau.pojo.MemberExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member
+    where memberid = #{memberid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member
+    where memberid = #{memberid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.byau.pojo.MemberExample" >
+    delete from member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.byau.pojo.Member" >
+    insert into member (memberid, username, title, 
+      email, context, magdate, 
+      contactsNo)
+    values (#{memberid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, #{magdate,jdbcType=VARCHAR}, 
+      #{contactsNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.byau.pojo.Member" >
+    insert into member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberid != null" >
+        memberid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="context != null" >
+        context,
+      </if>
+      <if test="magdate != null" >
+        magdate,
+      </if>
+      <if test="contactsNo != null" >
+        contactsNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberid != null" >
+        #{memberid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null" >
+        #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="magdate != null" >
+        #{magdate,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsNo != null" >
+        #{contactsNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.byau.pojo.MemberExample" resultType="java.lang.Integer" >
+    select count(*) from member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update member
+    <set >
+      <if test="record.memberid != null" >
+        memberid = #{record.memberid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.context != null" >
+        context = #{record.context,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magdate != null" >
+        magdate = #{record.magdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactsNo != null" >
+        contactsNo = #{record.contactsNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update member
+    set memberid = #{record.memberid,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      context = #{record.context,jdbcType=VARCHAR},
+      magdate = #{record.magdate,jdbcType=VARCHAR},
+      contactsNo = #{record.contactsNo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.byau.pojo.Member" >
+    update member
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null" >
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="magdate != null" >
+        magdate = #{magdate,jdbcType=VARCHAR},
+      </if>
+      <if test="contactsNo != null" >
+        contactsNo = #{contactsNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where memberid = #{memberid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.byau.pojo.Member" >
+    update member
+    set username = #{username,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      context = #{context,jdbcType=VARCHAR},
+      magdate = #{magdate,jdbcType=VARCHAR},
+      contactsNo = #{contactsNo,jdbcType=VARCHAR}
+    where memberid = #{memberid,jdbcType=INTEGER}
+  </update>
+  <select id="MemberAndContacts" parameterType="java.lang.String" resultType="cn.byau.pojo.Member">
+     select Member.*,Contacts.contactsName from Member,Contacts where Contacts.contactsNo=Member.contactsNo and memberid like concat("%",#{id},"%")
+  </select>
+</mapper>

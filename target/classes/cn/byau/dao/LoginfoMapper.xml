@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.byau.dao.LoginfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.byau.pojo.Loginfo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="logintime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="shebei" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="operation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  
+  <resultMap id="LoginfoAndUser" type="cn.byau.pojo.Loginfo" >
+   
+      <id column="id" property="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="userid" property="userid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="logintime" property="logintime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <result column="shebei" property="shebei" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="operation" property="operation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="ip" property="ip" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <association property="user" javaType="cn.byau.pojo.User">
+      	<id column="userID" property="userID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      	<result column="userName" property="userName" jdbcType="VARCHAR" javaType="java.lang.String" />
+      	<result column="password" property="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      	<result column="email" property="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      	<result column="userType" property="userType" jdbcType="CHAR" javaType="java.lang.String" />
+      	<result column="photo" property="photo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      	<result column="contactsNo" property="contactsNo" jdbcType="VARCHAR" javaType="java.lang.String" />
+      </association>
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, userid, logintime, shebei, operation, ip
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.byau.pojo.LoginfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from loginfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from loginfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from loginfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.byau.pojo.LoginfoExample" >
+    delete from loginfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.byau.pojo.Loginfo" >
+    insert into loginfo (id, userid, logintime, 
+      shebei, operation, ip
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=VARCHAR}, #{logintime,jdbcType=TIMESTAMP}, 
+      #{shebei,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.byau.pojo.Loginfo" >
+    insert into loginfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="logintime != null" >
+        logintime,
+      </if>
+      <if test="shebei != null" >
+        shebei,
+      </if>
+      <if test="operation != null" >
+        operation,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null" >
+        #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shebei != null" >
+        #{shebei,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null" >
+        #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.byau.pojo.LoginfoExample" resultType="java.lang.Integer" >
+    select count(*) from loginfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update loginfo
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logintime != null" >
+        logintime = #{record.logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.shebei != null" >
+        shebei = #{record.shebei,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operation != null" >
+        operation = #{record.operation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update loginfo
+    set id = #{record.id,jdbcType=INTEGER},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      logintime = #{record.logintime,jdbcType=TIMESTAMP},
+      shebei = #{record.shebei,jdbcType=VARCHAR},
+      operation = #{record.operation,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.byau.pojo.Loginfo" >
+    update loginfo
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null" >
+        logintime = #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shebei != null" >
+        shebei = #{shebei,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null" >
+        operation = #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.byau.pojo.Loginfo" >
+    update loginfo
+    set userid = #{userid,jdbcType=VARCHAR},
+      logintime = #{logintime,jdbcType=TIMESTAMP},
+      shebei = #{shebei,jdbcType=VARCHAR},
+      operation = #{operation,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="listLoginfoAndUser" parameterType="map" resultMap="LoginfoAndUser">
+  	select loginfo.*,user.userName from loginfo,user where loginfo.userid=user.userID 
+  	<if test="startTime!=null and startTime!=''">
+    <![CDATA[   and logintime>=#{startTime}]]>
+		</if>
+		<if test="endTime!=null and endTime!='' ">
+    <![CDATA[  and logintime<=#{endTime}]]>
+		</if>
+  
+  </select>
+</mapper>
